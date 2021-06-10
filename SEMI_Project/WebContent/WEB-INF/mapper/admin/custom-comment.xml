@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment/>
+
+<!-- 고객 게시글(상단) -->
+<entry key="customerComment">
+
+
+SELECT
+       A.BOARD_CODE
+     , A.BOARD_TITLE
+     , A.BOARD_DATE
+     , A.BOARD_CONTENT
+     , B.USER_NAME
+  FROM USER_BOARD A
+  JOIN USER_TABLE B
+    ON(A.USER_CODE = B.USER_CODE)
+ WHERE A.BOARD_CODE = ?
+	
+</entry>
+
+<!-- 업주 게시글(상단) -->
+<entry key="ownerComment">
+
+SELECT
+   	   A.BOARD_CODE
+  	 , A.BOARD_TITLE
+   	 , A.BOARD_DATE
+   	 , A.BOARD_CONTENT
+   	 , B.USER_NAME   
+  FROM OWNER_INQUIRY A
+  JOIN USER_TABLE B ON (A.OWNER_CODE = B.USER_CODE)
+  WHERE A.BOARD_CODE =?
+  
+</entry>
+
+<!-- 업주 게시글(상단) -->
+<entry key="adminComment">
+
+SELECT
+        B.REPLY_CONTENT
+     ,  B.REPLY_DATE
+     ,  C.USER_NAME  
+  FROM USER_TOTAL_REPLY_BOARD A
+  JOIN USER_REPLY B ON(A.REPLY_CODE = B.REPLY_CODE)
+  JOIN USER_TABLE C ON(B.USER_CODE = C.USER_CODE)
+ WHERE A.BOARD_CODE = ?
+
+</entry>
+
+<entry key="selectOwnerReply">
+
+SELECT
+       B.REPLY_CONTENT
+     , B.REPLY_DATE
+     , C.USER_NAME
+
+    FROM STORE_REPLY_BOARD A
+    JOIN OWNER_REPLY_MANAGE B ON(A.REPLY_CODE = B.REPLY_CODE)
+    JOIN USER_TABLE C ON(B.USER_CODE = C.USER_CODE)
+    WHERE A.BOARD_CODE = ?
+    
+</entry>
+
+<!-- 총 업주 게시글 댓글 -->
+<entry key="insertStoreReply">
+	INSERT
+	  INTO STORE_REPLY_BOARD A
+	VALUES
+	(
+	  ?
+	, SEQ_REPLY_NO.CURRVAL
+	)
+</entry>
+
+<!-- 업주게시판 댓글 관리 -->
+<entry key="insertOwnerReply">
+	INSERT
+	  INTO OWNER_REPLY_MANAGE A
+	VALUES
+	(
+	  ?
+	, SYSDATE
+	, SEQ_REPLY_NO.NEXTVAL
+	, 3
+	)
+</entry>
+
+<!-- 총 게시글 조회 -->
+<entry key="insertTotalUserReply">
+	INSERT
+	  INTO USER_TOTAL_REPLY_BOARD A
+	VALUES
+	(
+	  ?
+	, SEQ_REPLY_NO.CURRVAL
+	)
+</entry>
+
+
+<!-- 유저 게시판 댓글 관리 -->
+<entry key="insertUserReply">
+	INSERT
+	  INTO USER_REPLY A
+	VALUES
+	(
+	  ?
+	, SYSDATE
+	, SEQ_REPLY_NO.NEXTVAL
+	, 3
+	)
+</entry>
+
+</properties>
